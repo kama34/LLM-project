@@ -26,7 +26,7 @@ for d in data['data']:
 
         for qas in paragraph['qas']:
             print(qas)
-            break
+
         break
     q['context'] = str(q['paragraphs']['context'])
     q['question'] = str(q['paragraphs']['qas']['question'])
