@@ -22,6 +22,6 @@ def call_ollama_api(prompt, model="llama2"):
 
 
 # Пример использования
-response = call_ollama_api("Why is the sky blue?", model="llama-3-70b")
+response = call_ollama_api("Why is the sky blue?", model="llama3")
 if response:
     print(response['choices'][0]['text'])
