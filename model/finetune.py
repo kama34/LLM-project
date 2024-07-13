@@ -18,6 +18,7 @@ with open('/home/kama/project/data/SQuAD/train-v2.0.json', 'r') as f:
     data = json.load(f)
 
 # print(data['data'][0])
+parsed_data = []
 
 for d in data['data']:
 
@@ -25,17 +26,15 @@ for d in data['data']:
         context = paragraph['context']
 
         for qas in paragraph['qas']:
-            print(qas)
+            question = qas['question']
+            parsed_data.append({
+                'context': context,
+                'question': question,
+            })
 
-        break
-    q['context'] = str(q['paragraphs']['context'])
-    q['question'] = str(q['paragraphs']['qas']['question'])
-    q['answers'] = str(q['paragraphs'][''])
-    break
+print(parsed_data[0])
 
-data[0]
-
-df = pd.DataFrame(data)
+df = pd.DataFrame(parsed_data)
 df.head()
 
 # Setup dataset
