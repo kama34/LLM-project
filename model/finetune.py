@@ -38,6 +38,9 @@ for d in data['data']:
 df = pd.DataFrame(parsed_data)
 print(df.head(100))
 
+ds = Dataset.from_pandas(df)
+print(ds)
+
 # Setup dataset
 MODEL_NAME = "meta-llama/Llama-3-70b"
 # MODEL_NAME = "meta-llama/Meta-Llama-3-70B-Instruct"
