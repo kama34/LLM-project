@@ -38,11 +38,10 @@ def main(json_file_path):
     print_structure(data)
     print("```")
 
-    print("```json")
     print("\nExample JSON:")
-    print("```")
-
+    print("```json")
     print_example(data)
+    print("```")
 
 
 if __name__ == "__main__":
