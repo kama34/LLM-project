@@ -29,7 +29,7 @@ df = pd.DataFrame(data)
 df.head()
 
 # Setup dataset
-MODEL_NAME = "IlyaGusev/saiga_llama3_8b"
+MODEL_NAME = "meta-llama/Llama-3-70b"
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
 tokenizer.pad_token, tokenizer.eos_token
