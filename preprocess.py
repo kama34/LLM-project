@@ -31,6 +31,8 @@ def preprocess_squad(file_path, output_path):
                     'question': cleaned_question
                 })
 
+    print(processed_data[:5])  # Вывод первых 5 очищенных текстов
+
     with open(output_path, 'w') as f:
         json.dump(processed_data, f)
 
@@ -50,6 +52,7 @@ def preprocess_sciq(file_path, output_path):
             'question': cleaned_question
         })
 
+    print(processed_data[:5])  # Вывод первых 5 очищенных текстов
     with open(output_path, 'w') as f:
         json.dump(processed_data, f)
 
