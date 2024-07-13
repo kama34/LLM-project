@@ -1,18 +1,20 @@
 import os
+import json
+
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 os.environ["WANDB_DISABLED"] = "true"
 
 from datasets import Dataset
 import pandas as pd
-from transformers import AutoTokenizer, AutoModelForCausalLM, DataCollatorForSeq2Seq, TrainingArguments, Trainer, GenerationConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM, DataCollatorForSeq2Seq, TrainingArguments, Trainer, \
+    GenerationConfig
 import torch
 
 print(f"torch.cuda.is_available = {torch.cuda.is_available()}")
 print(f"torch.cuda.current_device = {torch.cuda.current_device()}")
 
 # Load dataset
-import json
 
 with open('/home/kama/project/data/SQuAD/train-v2.0.json', 'r') as f:
     data = json.load(f)
@@ -32,10 +34,8 @@ for d in data['data']:
                 'question': question,
             })
 
-print(parsed_data[0])
-
 df = pd.DataFrame(parsed_data)
-df.head()
+print(df.head())
 
 # Setup dataset
 MODEL_NAME = "meta-llama/Llama-3-70b"
@@ -74,21 +74,21 @@ next(gen_batches_train())
 # Prepare model
 device_map = {"": 0}
 model = AutoModelForCausalLM.from_pretrained(
-        MODEL_NAME,
-        device_map=device_map,
-        torch_dtype=torch.bfloat16,
-    )
+    MODEL_NAME,
+    device_map=device_map,
+    torch_dtype=torch.bfloat16,
+)
 
 from peft import LoraConfig, TaskType, get_peft_model
 
 peft_config = LoraConfig(
-        lora_alpha=32,
-        lora_dropout=0.1,
-        r=8,
-        bias="none",
-        task_type=TaskType.CAUSAL_LM,
-        target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
-    )
+    lora_alpha=32,
+    lora_dropout=0.1,
+    r=8,
+    bias="none",
+    task_type=TaskType.CAUSAL_LM,
+    target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+)
 
 tokenizer.pad_token = tokenizer.eos_token
 
@@ -124,6 +124,6 @@ trainer = SFTTrainer(
 
 trainer.train()
 
-peft_model_id="./finetuned_llama3"
+peft_model_id = "./finetuned_llama3"
 trainer.model.save_pretrained(peft_model_id)
 tokenizer.save_pretrained(peft_model_id)
