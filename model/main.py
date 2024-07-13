@@ -4,7 +4,7 @@ import ollama
 def extract_topics(text):
     stream = ollama.chat(
         model='llama3:70b',
-        messages=[{'role': 'user', 'content': f'Extract the main topics from the following text: {text}'}],
+        messages=[{'role': 'user', 'content': f'Extract the main topics from the following text: {text}. Write only 3 topics. '}],
         stream=False,
     )
     topics = []
