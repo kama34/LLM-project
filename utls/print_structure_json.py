@@ -28,8 +28,7 @@ def print_structure(data, indent=0):
             elif isinstance(value, list) and len(value) > 0 and isinstance(value[0], dict):
                 print_structure(value[0], indent + 1)
     elif isinstance(data, list):
-        for item in data:
-            print_structure(item, indent)
+        print_structure(data[0], indent)
 
 
 def main(json_file_path):
