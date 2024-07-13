@@ -1,7 +1,7 @@
-from ollama import Ollama
+from ollama import Client
 
 # Создание экземпляра Ollama
-ollama = Ollama()
+ollama = Client()
 
 # Функция для отправки запросов к API Ollama
 def call_ollama_api(prompt, model="llama2"):
