@@ -17,7 +17,7 @@ import json
 with open('/home/kama/project/data/SQuAD/train-v2.0.json', 'r') as f:
     data = json.load(f)
 
-print(data[0])
+print(data)
 
 for q in data:
     q['context'] = str(q['paragraphs']['context'])
