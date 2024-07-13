@@ -41,11 +41,18 @@ print(df.head(100))
 # MODEL_NAME = "meta-llama/Llama-3-70b"
 MODEL_NAME = "meta-llama/Meta-Llama-3-70B-Instruct"
 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
-tokenizer.pad_token, tokenizer.eos_token
+# tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+# tokenizer.pad_token, tokenizer.eos_token
+#
+# generation_config = GenerationConfig.from_pretrained(MODEL_NAME)
+# print(generation_config)
 
-generation_config = GenerationConfig.from_pretrained(MODEL_NAME)
-print(generation_config)
+pipeline = transformers.pipeline(
+    "text-generation",
+    model=MODEL_NAME,
+    model_kwargs={"torch_dtype": torch.bfloat16},
+    device_map="auto",
+)
 
 
 def gen_batches_train():
