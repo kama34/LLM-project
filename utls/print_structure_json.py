@@ -33,12 +33,12 @@ def print_structure(data, indent=0):
 def main(json_file_path):
     with open(json_file_path, 'r') as f:
         data = json.load(f)
-    print("\nStructure JSON:")
+    print("\n**Structure JSON:**")
     print("```json")
     print_structure(data)
     print("```")
 
-    print("\nExample JSON:")
+    print("\n**Example JSON:**")
     print("```json")
     print_example(data)
     print("```")
