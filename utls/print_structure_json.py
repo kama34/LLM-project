@@ -1,6 +1,6 @@
 """
 File which read and print structure json file
-For launch: python3 script.py your_file.json
+For launch: python3 print_structure.py your_file.json
 """
 
 import json
