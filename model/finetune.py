@@ -17,7 +17,10 @@ print(f"torch.cuda.current_device = {torch.cuda.current_device()}")
 
 # Load dataset
 
-with open('/home/kama/project/data/SQuAD/train-v2.0.json', 'r') as f:
+# with open('/home/kama/project/data/SQuAD/train-v2.0.json', 'r') as f:
+#     data = json.load(f)
+
+with open('/home/kama/project/data/processed_squad_train.json', 'r') as f:
     data = json.load(f)
 
 # print(data['data'][0])
@@ -99,7 +102,7 @@ tokenizer.pad_token = tokenizer.eos_token
 
 # Training
 training_arguments = TrainingArguments(
-    output_dir='./saiga_results',
+    output_dir='./llama3_results',
     per_device_train_batch_size=8,
     gradient_accumulation_steps=8,
     optim="adamw_torch",
