@@ -19,8 +19,10 @@ with open('/home/kama/project/data/SQuAD/train-v2.0.json', 'r') as f:
 
 # print(data['data'][0])
 
-for q in data['data']:
-    print(q)
+for d in data['data']:
+    for paragreph in d['paragraphs']:
+        print(paragreph)
+        break
     q['context'] = str(q['paragraphs']['context'])
     q['question'] = str(q['paragraphs']['qas']['question'])
     q['answers'] = str(q['paragraphs'][''])
