@@ -58,18 +58,16 @@ def preprocess_sciq(file_path, output_path):
 
 
 def main():
-    # Пример вызова функции
     preprocess_squad('/home/kama/project/data/SQuAD/train-v2.0.json',
                      '/home/kama/project/data/processed_squad_train.json')
     preprocess_squad('/home/kama/project/data/SQuAD/dev-v2.0.json',
                      '/home/kama/project/data/processed_squad_dev.json')
 
-    # Пример вызова функции
-    preprocess_sciq('/home/kama/project/data/SciQ/sciq_data/"SciQ dataset-2 3"/train.json',
+    preprocess_sciq('/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/train.json',
                     '/home/kama/project/data/processed_sciq_train.json')
-    preprocess_sciq('/home/kama/project/data/SciQ/sciq_data/"SciQ dataset-2 3"/test.json',
+    preprocess_sciq('/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/test.json',
                     '/home/kama/project/data/processed_sciq_test.json')
-    preprocess_sciq('/home/kama/project/data/SciQ/sciq_data/"SciQ dataset-2 3"/valid.json',
+    preprocess_sciq('/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/valid.json',
                     '/home/kama/project/data/processed_sciq_valid.json')
 
 
