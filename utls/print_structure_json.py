@@ -16,8 +16,7 @@ def print_example(data, indent=0):
             else:
                 print('  ' * indent + str(key) + ': ' + str(value))
     elif isinstance(data, list):
-        for item in data:
-            print_example(item, indent)
+        print_example(data[0], indent)
 
 
 def print_structure(data, indent=0):
