@@ -16,7 +16,7 @@ def preprocess_text(text):
 # Пример использования для SQuAD
 import json
 
-with open('train-v2.0.json') as f:
+with open('data/SQuAD/train-v2.0.json') as f:
     squad_data = json.load(f)
 
 texts = []
