@@ -1,3 +1,4 @@
+import json
 import re
 import nltk
 
@@ -13,17 +14,61 @@ def preprocess_text(text):
     return ' '.join(tokens)
 
 
-# Пример использования для SQuAD
-import json
+def preprocess_squad(file_path, output_path):
+    with open(file_path) as f:
+        squad_data = json.load(f)
 
-with open('data/SQuAD/train-v2.0.json') as f:
-    squad_data = json.load(f)
+    processed_data = []
+    for article in squad_data['data']:
+        for paragraph in article['paragraphs']:
+            context = paragraph['context']
+            cleaned_context = preprocess_text(context)
+            for qa in paragraph['qas']:
+                question = qa['question']
+                cleaned_question = preprocess_text(question)
+                processed_data.append({
+                    'context': cleaned_context,
+                    'question': cleaned_question
+                })
 
-texts = []
-for article in squad_data['data']:
-    for paragraph in article['paragraphs']:
-        text = paragraph['context']
-        cleaned_text = preprocess_text(text)
-        texts.append(cleaned_text)
+    with open(output_path, 'w') as f:
+        json.dump(processed_data, f)
 
-print(texts[:5])  # Вывод первых 5 очищенных текстов
+
+def preprocess_sciq(file_path, output_path):
+    with open(file_path) as f:
+        sciq_data = json.load(f)
+
+    processed_data = []
+    for entry in sciq_data:
+        support = entry['support']
+        question = entry['question']
+        cleaned_support = preprocess_text(support)
+        cleaned_question = preprocess_text(question)
+        processed_data.append({
+            'support': cleaned_support,
+            'question': cleaned_question
+        })
+
+    with open(output_path, 'w') as f:
+        json.dump(processed_data, f)
+
+
+def main():
+    # Пример вызова функции
+    preprocess_squad('/home/kama/project/data/SQuAD/train-v2.0.json',
+                     '/home/kama/project/data/processed_squad_train.json')
+    preprocess_squad('/home/kama/project/data/SQuAD/dev-v2.0.json',
+                     '/home/kama/project/data/processed_squad_dev.json')
+
+    # Пример вызова функции
+    preprocess_sciq('/home/kama/project/data/SciQ/sciq_data/"SciQ dataset-2 3"/train.json',
+                    '/home/kama/project/data/processed_sciq_train.json')
+    preprocess_sciq('/home/kama/project/data/SciQ/sciq_data/"SciQ dataset-2 3"/test.json',
+                    '/home/kama/project/data/processed_sciq_test.json')
+    preprocess_sciq('/home/kama/project/data/SciQ/sciq_data/"SciQ dataset-2 3"/valid.json',
+                    '/home/kama/project/data/processed_sciq_valid.json')
+
+
+if __name__ == "__main__":
+    main()
