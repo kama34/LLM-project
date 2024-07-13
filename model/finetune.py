@@ -8,8 +8,8 @@ import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM, DataCollatorForSeq2Seq, TrainingArguments, Trainer, GenerationConfig
 import torch
 
-torch.cuda.is_available()
-torch.cuda.current_device()
+print(f"torch.cuda.is_available = {torch.cuda.is_available()}")
+print(f"torch.cuda.current_device = {torch.cuda.current_device()}")
 
 # Load dataset
 import json
