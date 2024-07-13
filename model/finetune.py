@@ -36,7 +36,8 @@ for d in data['data']:
             })
 
 df = pd.DataFrame(parsed_data)
-print(df.head(100))
+print(df['context'].head(1))
+print(df['question'].head(1))
 
 ds = Dataset.from_pandas(df)
 print(ds)
@@ -55,9 +56,9 @@ print(generation_config)
 def gen_batches_train():
     for sample in iter(ds):
         # Extract instruction and input from the sample
-        system_prompt = "Ты профессиональный экзаменатор с глубоким знанием предмета. Твоя задача - помощь в составлении вопросов для студентческого экзамена."
-        input_text = f"# Вопрос: {sample['question']}\n# Правильный ответ: {sample['correct_answer']}\n\nСоздай 3 правдоподобных, но неправильных ответа (дистракторов) для данного вопроса. Cгенерируй 3 неправильных ответа (дистрактора) в следующем формате:\n# Дистракторы:\n - <неправильный ответ 1>\n - <неправильный ответ 2>\n - <неправильный ответ 3>.\nНе добавляй номера или буквы к ответам."
-        out_text = f"# Дистракторы:\n - {sample['distractor_1']}\n - {sample['distractor_2']}\n - {sample['distractor_3']}"
+        system_prompt = "Extract possible questions from the given context."
+        input_text = f"Context: {sample['context']}"
+        out_text = f"Possible Questions: {sample['question']}"
         formatted_prompt = None
 
         formatted_prompt = tokenizer.apply_chat_template([{
@@ -74,7 +75,7 @@ def gen_batches_train():
         yield {'text': formatted_prompt}
 
 
-next(gen_batches_train())
+print(next(gen_batches_train()))
 
 # Prepare model
 device_map = {"": 0}
