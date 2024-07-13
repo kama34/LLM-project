@@ -35,7 +35,7 @@ for d in data['data']:
             })
 
 df = pd.DataFrame(parsed_data)
-print(df.head())
+print(df.head(100))
 
 # Setup dataset
 MODEL_NAME = "meta-llama/Llama-3-70b"
