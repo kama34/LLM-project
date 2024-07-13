@@ -36,8 +36,7 @@ for d in data['data']:
             })
 
 df = pd.DataFrame(parsed_data)
-print(df['context'].iloc[0])
-print(df['question'].iloc[0])
+print(df.head(100))
 
 ds = Dataset.from_pandas(df)
 print(ds)
