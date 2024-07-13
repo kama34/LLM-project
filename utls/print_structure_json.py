@@ -34,7 +34,7 @@ def main(json_file_path):
     with open(json_file_path, 'r') as f:
         data = json.load(f)
     print("\nStructure:")
-    print_structure(data)
+    # print_structure(data)
     print("\nExample:")
     print_example(data)
 
