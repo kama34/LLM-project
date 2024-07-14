@@ -1,93 +1,96 @@
-# import os
-# import json
-#
-# # os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-# # os.environ["CUDA_VISIBLE_DEVICES"] = "1"
-# # os.environ["WANDB_DISABLED"] = "true"
-#
-# from datasets import Dataset
-# import pandas as pd
-# from transformers import AutoTokenizer, AutoModelForCausalLM, DataCollatorForSeq2Seq, TrainingArguments, Trainer, \
-#     GenerationConfig
-# import torch
-# import transformers
-#
-# print(f"torch.cuda.is_available = {torch.cuda.is_available()}")
-# print(f"torch.cuda.current_device = {torch.cuda.current_device()}")
-#
-# # Load dataset
-#
-# with open('/home/kama/project/data/SQuAD/train-v2.0.json', 'r') as f:
-#     data = json.load(f)
-#
-# # with open('/home/kama/project/data/processed_squad_train.json', 'r') as f:
-# #     data = json.load(f)
-#
-# # print(data['data'][0])
-# parsed_data = []
-#
-# for d in data['data']:
-#
-#     for paragraph in d['paragraphs']:
-#         context = paragraph['context']
-#
-#         for qas in paragraph['qas']:
-#             question = qas['question']
-#             parsed_data.append({
-#                 'context': context,
-#                 'question': question,
-#             })
-#
-# df = pd.DataFrame(parsed_data)
-# print(df.head(100))
-#
-# ds = Dataset.from_pandas(df)
-# print(ds)
-#
-# # Setup dataset
-# # MODEL_NAME = "meta-llama/Llama-3-70b"
-# MODEL_NAME = "meta-llama/Meta-Llama-3-70B-Instruct"
-#
-# tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
-# print(tokenizer.pad_token, tokenizer.eos_token)
-#
-# generation_config = GenerationConfig.from_pretrained(MODEL_NAME)
-# print(generation_config)
-#
-#
-# def gen_batches_train():
-#     for sample in iter(ds):
-#         # Extract instruction and input from the sample
-#         system_prompt = "Extract possible questions from the given context."
-#         input_text = f"Context: {sample['context']}"
-#         out_text = f"Possible Questions: {sample['question']}"
-#         formatted_prompt = None
-#
-#         formatted_prompt = tokenizer.apply_chat_template([{
-#             "role": "system",
-#             "content": system_prompt
-#         }, {
-#             "role": "user",
-#             "content": input_text
-#         }, {
-#             "role": "assistant",
-#             "content": out_text
-#         }], tokenize=False, add_generation_prompt=False) + '<|end_of_text|>'
-#
-#         yield {'text': formatted_prompt}
-#
-#
-# print(next(gen_batches_train()))
-#
-# # Prepare model
-# device_map = {"": 0}
-# model = AutoModelForCausalLM.from_pretrained(
-#     MODEL_NAME,
-#     device_map="auto",
-#     torch_dtype=torch.bfloat16,
-# )
+import os
+import json
 
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+# os.environ["WANDB_DISABLED"] = "true"
+
+from datasets import Dataset
+import pandas as pd
+from transformers import AutoTokenizer, AutoModelForCausalLM, DataCollatorForSeq2Seq, TrainingArguments, Trainer, \
+    GenerationConfig
+import torch
+import transformers
 from peft import LoraConfig, TaskType, get_peft_model
+
+from trl import SFTTrainer
+
+
+print(f"torch.cuda.is_available = {torch.cuda.is_available()}")
+print(f"torch.cuda.current_device = {torch.cuda.current_device()}")
+
+# Load dataset
+
+with open('/home/kama/project/data/SQuAD/train-v2.0.json', 'r') as f:
+    data = json.load(f)
+
+# with open('/home/kama/project/data/processed_squad_train.json', 'r') as f:
+#     data = json.load(f)
+
+# print(data['data'][0])
+parsed_data = []
+
+for d in data['data']:
+
+    for paragraph in d['paragraphs']:
+        context = paragraph['context']
+
+        for qas in paragraph['qas']:
+            question = qas['question']
+            parsed_data.append({
+                'context': context,
+                'question': question,
+            })
+
+df = pd.DataFrame(parsed_data)
+print(df.head(100))
+
+ds = Dataset.from_pandas(df)
+print(ds)
+
+# Setup dataset
+# MODEL_NAME = "meta-llama/Llama-3-70b"
+MODEL_NAME = "meta-llama/Meta-Llama-3-70B-Instruct"
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+print(tokenizer.pad_token, tokenizer.eos_token)
+
+generation_config = GenerationConfig.from_pretrained(MODEL_NAME)
+print(generation_config)
+
+
+def gen_batches_train():
+    for sample in iter(ds):
+        # Extract instruction and input from the sample
+        system_prompt = "Extract possible questions from the given context."
+        input_text = f"Context: {sample['context']}"
+        out_text = f"Possible Questions: {sample['question']}"
+        formatted_prompt = None
+
+        formatted_prompt = tokenizer.apply_chat_template([{
+            "role": "system",
+            "content": system_prompt
+        }, {
+            "role": "user",
+            "content": input_text
+        }, {
+            "role": "assistant",
+            "content": out_text
+        }], tokenize=False, add_generation_prompt=False) + '<|end_of_text|>'
+
+        yield {'text': formatted_prompt}
+
+
+print(next(gen_batches_train()))
+
+# Prepare model
+device_map = {"": 0}
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_NAME,
+    device_map="auto",
+    torch_dtype=torch.bfloat16,
+)
+
 
 peft_config = LoraConfig(
     lora_alpha=32,
@@ -118,7 +121,6 @@ training_arguments = TrainingArguments(
 train_gen = Dataset.from_generator(gen_batches_train)
 tokenizer.padding_side = "right"
 
-from trl import SFTTrainer
 
 trainer = SFTTrainer(
     model=model,
