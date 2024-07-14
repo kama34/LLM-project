@@ -6,7 +6,7 @@ import os
 import sys
 
 
-from ...utls.writer import write_to_file
+import importlib.util
 
 import json
 import torch
@@ -14,6 +14,8 @@ from datasets import Dataset, load_metric
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM, DataCollatorForSeq2Seq, TrainingArguments, Trainer, \
     GenerationConfig
+
+write_to_file("./loss", fine_tuned_loss, True)
 
 # Load dataset
 with open('/home/kama/project/data/SQuAD/dev-v2.0.json', 'r') as f:
