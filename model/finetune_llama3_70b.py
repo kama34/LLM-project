@@ -139,3 +139,6 @@ trainer.train()
 peft_model_id = "./finetuned_llama3"
 trainer.model.save_pretrained(peft_model_id)
 tokenizer.save_pretrained(peft_model_id)
+
+
+# Не получается сделать fine tune потому что улетает по памяти во время обучения. Да и даже если будет всё хорошо, то ещё ждать 100 дней, при данных параметрах.
