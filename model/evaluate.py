@@ -52,9 +52,9 @@ def compute_loss_with_prompt(model, tokenizer, dataset):
 
 
 # Load fine-tuned model
-fine_tuned_model_path = './finetuned_llama3'
-fine_tuned_model = AutoModelForCausalLM.from_pretrained(fine_tuned_model_path)
-fine_tuned_tokenizer = AutoTokenizer.from_pretrained(fine_tuned_model_path)
+# fine_tuned_model_path = './finetuned_llama3'
+# fine_tuned_model = AutoModelForCausalLM.from_pretrained(fine_tuned_model_path)
+# fine_tuned_tokenizer = AutoTokenizer.from_pretrained(fine_tuned_model_path)
 
 # Возможный вариант загрузки fine tune model
 # from peft import PeftModel
@@ -69,10 +69,10 @@ fine_tuned_tokenizer = AutoTokenizer.from_pretrained(fine_tuned_model_path)
 
 # Load original models
 llama_70b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-70B-Instruct')
-llama_8b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct')
+# llama_8b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct')
 
 llama_70b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-70B-Instruct')
-llama_8b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct')
+# llama_8b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct')
 
 # Select a subset for evaluation
 eval_dataset = ds.select(range(10))  # Example: first 100 samples
