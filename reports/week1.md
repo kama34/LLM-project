@@ -333,7 +333,7 @@ conda install requests json
 ```
 
 ```bash
-conda install pytorch torchvision torchaudio -c pytorch
+conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
 ```
 
 ```bash
@@ -349,6 +349,10 @@ conda install matplotlib seaborn
 ```
 
 ```bash
+conda install -c huggingface datasets
+```
+
+```bash
 jupyter notebook
 ```
 
@@ -358,6 +362,14 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 ```bash
 pip install ollama
+```
+
+```bash
+pip install peft
+```
+
+```bash
+pip install trl
 ```
 
 ```bash
