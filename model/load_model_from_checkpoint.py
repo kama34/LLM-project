@@ -1,6 +1,6 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-checkpoint_path = './llama3_results/checkpoint-6800'
+checkpoint_path = './llama3_results/checkpoint-7000'
 
 model = AutoModelForCausalLM.from_pretrained(checkpoint_path)
 tokenizer = AutoTokenizer.from_pretrained(checkpoint_path)
