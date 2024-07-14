@@ -72,6 +72,7 @@ llama_70b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-
 
 llama_70b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-70B-Instruct', device_map="auto",
                                                     torch_dtype=torch.bfloat16, )
+llama_70b_tokenizer.pad_token = llama_70b_tokenizer.eos_token
 
 # Select a subset for evaluation
 eval_dataset = ds.select(range(100))
