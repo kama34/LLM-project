@@ -50,7 +50,7 @@ print(ds)
 
 # Setup dataset
 # MODEL_NAME = "meta-llama/Llama-3-70b"
-MODEL_NAME = "meta-llama/Meta-Llama-3-B-Instruct"
+MODEL_NAME = "meta-llama/Meta-Llama-3-8B-Instruct"
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
 print(tokenizer.pad_token, tokenizer.eos_token)
