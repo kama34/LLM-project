@@ -1,4 +1,9 @@
 import os
+
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+# os.environ["WANDB_DISABLED"] = "true"
+
 import json
 import torch
 from datasets import Dataset, load_metric
@@ -68,10 +73,12 @@ def compute_loss_with_prompt(model, tokenizer, dataset):
 # model = model.merge_and_unload()
 
 # Load original models
-llama_70b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-70B-Instruct')
+llama_70b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-70B-Instruct', device_map="auto",
+                                                       torch_dtype=torch.bfloat16, )
 # llama_8b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct')
 
-llama_70b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-70B-Instruct')
+llama_70b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-70B-Instruct', device_map="auto",
+                                                    torch_dtype=torch.bfloat16, )
 # llama_8b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct')
 
 # Select a subset for evaluation
