@@ -7,6 +7,7 @@ import pandas as pd
 from datasets import Dataset, load_metric
 from transformers import AutoTokenizer, AutoModelForCausalLM, DataCollatorForSeq2Seq, TrainingArguments, Trainer, \
     GenerationConfig
+from tqdm import tqdm
 
 
 def import_from_path(module_name, module_path):
@@ -44,7 +45,7 @@ def compute_loss_with_prompt(model, tokenizer, dataset):
     total_loss = 0.0
     total_count = 0
     with torch.no_grad():
-        for sample in dataset:
+        for sample in tqdm(dataset, desc="Evaluating", unit="sample"):
             system_prompt = "Extract possible questions from the given context."
             input_text = f"Context: {sample['context']}"
 
@@ -66,18 +67,18 @@ def compute_loss_with_prompt(model, tokenizer, dataset):
 
 
 # Load original models
-llama_70b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-70B-Instruct', device_map="auto",
-                                                       torch_dtype=torch.bfloat16, )
+llama_8b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct', device_map="auto",
+                                                      torch_dtype=torch.bfloat16)
 
-llama_70b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-70B-Instruct', device_map="auto",
-                                                    torch_dtype=torch.bfloat16, )
+llama_8b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct', device_map="auto",
+                                                   torch_dtype=torch.bfloat16, )
 
 # Select a subset for evaluation
 eval_dataset = ds.select(range(100))
 
 # Compute loss for each model
-llama_70b_loss = compute_loss_with_prompt(llama_70b_model, llama_70b_tokenizer, eval_dataset)
+llama_8b_loss = compute_loss_with_prompt(llama_8b_model, llama_8b_tokenizer, eval_dataset)
 
-write_to_file("/home/kama/project/model/evaluate/loss.txt", f"Llama 3 70B Model Loss: {llama_70b_loss}", False)
+write_to_file("/home/kama/project/model/evaluate/loss.txt", f"Llama 3 8B Model Loss: {llama_8b_loss}", False)
 
-print(f"Llama 3 70B Model Loss: {llama_70b_loss}")
+print(f"Llama 3 8B Model Loss: {llama_8b_loss}")

@@ -7,6 +7,7 @@ import pandas as pd
 from datasets import Dataset, load_metric
 from transformers import AutoTokenizer, AutoModelForCausalLM, DataCollatorForSeq2Seq, TrainingArguments, Trainer, \
     GenerationConfig
+from tqdm import tqdm
 
 
 def import_from_path(module_name, module_path):
@@ -44,7 +45,7 @@ def compute_loss_with_prompt(model, tokenizer, dataset):
     total_loss = 0.0
     total_count = 0
     with torch.no_grad():
-        for sample in dataset:
+        for sample in tqdm(dataset, desc="Evaluating", unit="sample"):
             system_prompt = "Extract possible questions from the given context."
             input_text = f"Context: {sample['context']}"
 
