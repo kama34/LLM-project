@@ -1,9 +1,9 @@
 import os
 import json
 
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
-os.environ["WANDB_DISABLED"] = "true"
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+# os.environ["WANDB_DISABLED"] = "true"
 
 from datasets import Dataset
 import pandas as pd
@@ -87,7 +87,7 @@ print(next(gen_batches_train()))
 device_map = {"": 0}
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
-    device_map=device_map,
+    device_map="auto",
     torch_dtype=torch.bfloat16,
 )
 
@@ -106,8 +106,8 @@ tokenizer.pad_token = tokenizer.eos_token
 # Training
 training_arguments = TrainingArguments(
     output_dir='./llama3_results',
-    # per_device_train_batch_size=16,
-    per_device_train_batch_size=8,
+    per_device_train_batch_size=16,
+    # per_device_train_batch_size=8,
     # per_device_train_batch_size=1,  # если памяти не будет хватать
     gradient_accumulation_steps=8,
     optim="adamw_torch",
