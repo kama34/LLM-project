@@ -106,6 +106,6 @@ fine_tuned_loss = compute_loss_with_prompt(fine_tuned_model, fine_tuned_tokenize
 # llama_70b_loss = compute_loss_with_prompt(llama_70b_model, llama_70b_tokenizer, eval_dataset)
 # llama_8b_loss = compute_loss_with_prompt(llama_8b_model, llama_8b_tokenizer, eval_dataset)
 
-write_to_file("./loss.txt", fine_tuned_loss, True)
+write_to_file("./loss.txt", f"Fine-tuned Model Loss: {fine_tuned_loss}", True)
 
 print(f"Fine-tuned Model Loss: {fine_tuned_loss}")
