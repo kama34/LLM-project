@@ -49,7 +49,6 @@ ds = Dataset.from_pandas(df)
 print(ds)
 
 # Setup dataset
-# MODEL_NAME = "meta-llama/Llama-3-70b"
 MODEL_NAME = "meta-llama/Meta-Llama-3-70B-Instruct"
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
