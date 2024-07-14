@@ -22,12 +22,10 @@ def import_from_path(module_name, module_path):
     spec.loader.exec_module(module)
     return module
 
-# Импорт функции
+# import method
 writer = import_from_path('writer', '/home/kama/project/utls/writer.py')
 
 write_to_file = writer.write_to_file
-
-write_to_file("./loss", fine_tuned_loss, True)
 
 # Load dataset
 with open('/home/kama/project/data/SQuAD/dev-v2.0.json', 'r') as f:
