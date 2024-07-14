@@ -58,7 +58,7 @@ def compute_loss_with_prompt(model, tokenizer, dataset):
 
             inputs = tokenizer(formatted_prompt, return_tensors='pt', truncation=True, padding=True, max_length=1024)
             inputs = {key: val.to(model.device) for key, val in inputs.items()}
-            labels = inputs.input_ids.clone()
+            labels = inputs["input_ids"].clone()
             outputs = model(**inputs, labels=labels)
             total_loss += outputs.loss.item()
             total_count += 1
