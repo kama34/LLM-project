@@ -58,7 +58,7 @@ def compute_loss_with_prompt(model, tokenizer, dataset):
 
             inputs = tokenizer(formatted_prompt, return_tensors='pt', truncation=True, padding=True, max_length=1024)
             inputs = {key: val.to(model.device) for key, val in inputs.items()}
-            labels = inputs.input_ids.clone()
+            labels = inputs["input_ids"].clone()
             outputs = model(**inputs, labels=labels)
             total_loss += outputs.loss.item()
             total_count += 1
@@ -73,11 +73,11 @@ llama_70b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-70B
                                                     torch_dtype=torch.bfloat16, )
 
 # Select a subset for evaluation
-eval_dataset = ds.select(range(10))
+eval_dataset = ds.select(range(100))
 
 # Compute loss for each model
 llama_70b_loss = compute_loss_with_prompt(llama_70b_model, llama_70b_tokenizer, eval_dataset)
 
-write_to_file("./loss.txt", f"Llama 3 70B Model Loss: {llama_70b_loss}", False)
+write_to_file("/home/kama/project/model/evaluate/loss.txt", f"Llama 3 70B Model Loss: {llama_70b_loss}", False)
 
 print(f"Llama 3 70B Model Loss: {llama_70b_loss}")

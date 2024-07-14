@@ -71,11 +71,11 @@ fine_tuned_model = AutoModelForCausalLM.from_pretrained(fine_tuned_model_path)
 fine_tuned_tokenizer = AutoTokenizer.from_pretrained(fine_tuned_model_path)
 
 # Select a subset for evaluation
-eval_dataset = ds.select(range(10))
+eval_dataset = ds.select(range(100))
 
 # Compute loss for each model
 fine_tuned_loss = compute_loss_with_prompt(fine_tuned_model, fine_tuned_tokenizer, eval_dataset)
 
-write_to_file("./loss.txt", f"Fine-tuned Model Loss: {fine_tuned_loss}", True)
+write_to_file("/home/kama/project/model/evaluate/loss.txt", f"Fine-tuned Model Loss: {fine_tuned_loss}", True)
 
 print(f"Fine-tuned Model Loss: {fine_tuned_loss}")
