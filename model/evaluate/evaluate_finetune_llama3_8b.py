@@ -15,6 +15,18 @@ import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM, DataCollatorForSeq2Seq, TrainingArguments, Trainer, \
     GenerationConfig
 
+def import_from_path(module_name, module_path):
+    spec = importlib.util.spec_from_file_location(module_name, module_path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
+
+# Импорт функции
+writer = import_from_path('writer', '/home/kama/project/utls/writer.py')
+
+write_to_file = writer.write_to_file
+
 write_to_file("./loss", fine_tuned_loss, True)
 
 # Load dataset
