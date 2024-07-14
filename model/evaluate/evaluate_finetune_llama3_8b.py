@@ -4,9 +4,9 @@ import os
 # os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 # os.environ["WANDB_DISABLED"] = "true"
 import sys
-sys.path.append('/home/kama/project')
 
-from utls.writer import write_to_file
+
+from project.utls.writer import write_to_file
 
 import json
 import torch
