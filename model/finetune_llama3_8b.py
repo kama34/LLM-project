@@ -1,9 +1,9 @@
 import os
 import json
 
-# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
-# os.environ["WANDB_DISABLED"] = "true"
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["WANDB_DISABLED"] = "true"
 
 from datasets import Dataset
 import pandas as pd
@@ -87,7 +87,7 @@ print(next(gen_batches_train()))
 device_map = {"": 0}
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
-    device_map="auto",
+    device_map=device_map,
     torch_dtype=torch.bfloat16,
 )
 
