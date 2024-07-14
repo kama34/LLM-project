@@ -70,8 +70,7 @@ def compute_loss_with_prompt(model, tokenizer, dataset):
 llama_8b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct', device_map="auto",
                                                       torch_dtype=torch.bfloat16)
 
-llama_8b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct', device_map="auto",
-                                                   torch_dtype=torch.bfloat16, )
+llama_8b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct')
 
 # Select a subset for evaluation
 eval_dataset = ds.select(range(100))
