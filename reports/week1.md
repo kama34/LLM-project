@@ -1,23 +1,23 @@
-## **1. Подготовка и начальная настройка (Неделя 1)**
+## **1. Preparation and Initial Setup (Week 1)**
 
-### **День 1-2: Обзор литературы**
+### **Day 1-2: Literature Review**
 
-Поскольку обзор литературы требует изучения научных статей и документации, вы можете использовать следующие ресурсы для поиска релевантных статей и исследований:
+Because a literature review requires research articles and documentation, you may use the following resources to find relevant articles and studies:
 
 1. **Google Scholar** (https://scholar.google.com)
 2. **ResearchGate** (https://www.researchgate.net)
 3. **arXiv** (https://arxiv.org)
 4. **IEEE Xplore** (https://ieeexplore.ieee.org)
 
-### **День 3-5: Сбор и предварительная обработка данных**
+### **Day 3-5: Data Collection and Pre-processing**
 
-**Шаг 1: Поиск и загрузка образовательных датасетов**
+**Step 1: Search and download educational datasets**
 
 1. **SQuAD (Stanford Question Answering Dataset)**
 
-   - **Описание:** Датасет для задач вопросов-ответов, содержит отрывки из Википедии и вопросы, связанные с ними.
-   - **Ссылка:** https://rajpurkar.github.io/SQuAD-explorer/
-   - **Код для загрузки:**
+   - **Description:** Dataset for question-answering tasks, contains excerpts from Wikipedia and related questions.
+   - **Link:** https://rajpurkar.github.io/SQuAD-explorer/
+   - **Code to download:**
 
    ```python
    !wget https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v2.0.json
@@ -26,58 +26,58 @@
 
 2. **SciQ (Science Questions)**
 
-   - **Описание:** Содержит вопросы и ответы по естественным наукам, которые были собраны из учебных текстов.
-   - **Ссылка:** https://allenai.org/data/sciq
-   - **Код для загрузки:**
+   - **Description:** Contains science questions and answers that have been collected from educational texts.
+   - **Link:** https://allenai.org/data/sciq
+   - **Download code:**
 
    ```python
    !wget https://ai2-public-datasets.s3.amazonaws.com/sciq/SciQ.zip
-   !unzip SciQ.zip -d sciq_data
+   !unzip sciQ.zip -d sciq_data
    ```
    
-### Описание файлов
+### File description
 
 #### SQuAD
 1. **/home/kama/project/data/SQuAD/dev-v2.0.json**
-   - Это файл с тестовым набором данных из датасета SQuAD. Он используется для валидации моделей.
+   - This is a test dataset file from the SQuAD dataset. It is used for model validation.
 
 2. **/home/kama/project/data/SQuAD/train-v2.0.json**
-   - Основной файл с тренировочным набором данных из датасета SQuAD. Используется для обучения моделей.
+   - The main file with the training dataset from the SQuAD dataset. It is used for model training.
 
 3. **/home/kama/project/data/SQuAD/train-v2.0.json.1**
-   - Это дубликат файла train-v2.0.json. Его можно игнорировать, так как он содержит те же данные.
+   - This is a duplicate of the train-v2.0.json file. It can be ignored as it contains the same data.
 
 #### SciQ
 1. **/home/kama/project/data/SciQ/dev-v2.0.json**
-   - Тестовый набор данных из датасета SciQ. Используется для валидации моделей.
+   - Test dataset from the SciQ dataset. Used for model validation.
 
 2. **/home/kama/project/data/SciQ/train-v2.0.json**
-   - Основной файл с тренировочным набором данных из датасета SciQ. Используется для обучения моделей.
+   - Main file with training dataset from SciQ dataset. It is used for model training.
 
 3. **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/license.txt**
-   - Лицензионное соглашение для датасета SciQ. Для анализа и обработки данных не требуется.
+   - License agreement for the SciQ dataset. Not required for data analysis and processing.
 
 4. **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/readme.txt**
-   - Файл README с описанием датасета. Полезно для понимания структуры данных.
+   - README file with a description of the dataset. Useful for understanding the data structure.
 
 5. **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/test.json**
-   - Тестовый набор данных из датасета SciQ. Используется для валидации моделей.
+   - Test dataset from the SciQ dataset. Used for model validation.
 
 6. **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/train.json**
-   - Основной файл с тренировочным набором данных из датасета SciQ. Используется для обучения моделей.
+   - Main file with the training dataset from the SciQ dataset. It is used for model training.
 
 7. **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/valid.json**
-   - Валидационный набор данных из датасета SciQ. Используется для оценки модели во время обучения.
+   - Validation dataset from the SciQ dataset. Used for model evaluation during training.
 
-### Файлы, интересные для обработки
-Для обучения и тестирования моделей нам будут интересны следующие файлы:
+### Files of interest for processing
+For model training and testing, we will be interested in the following files:
 - **/home/kama/project/data/SQuAD/train-v2.0.json**
 - **/home/kama/project/data/SQuAD/dev-v2.0.json**
-- **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/train.json**
-- **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/test.json**
-- **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/valid.json**
+- **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/train.json** **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/train.json**
+- **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/test.json** **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/test.json**
+- **/home/kama/project/data/SciQ/sciq_data/SciQ dataset-2 3/valid.json****
 
-### Структуры файлов, интересные для обработки
+### File structures of interest for processing
 /home/kama/project/data/SQuAD/train-v2.0.json
 
 **Structure JSON:**
@@ -136,6 +136,24 @@ data
     context
 ```
 
+/home/kama/project/data/SQuAD/dev-v2.0.json
+
+**Structure JSON:**
+```json
+version
+data
+  title
+  paragraphs
+    qas
+      question
+      id
+      answers
+        text
+        answer_start
+      is_impossible
+    context
+```
+
 **Example JSON:**
 ```json
 version: v2.0
@@ -153,7 +171,7 @@ data: [
     ]
     context: The Normans (Norman: Nourmands; French: Normands; Latin: Normanni) were the people who in the 10th and 11th centuries gave their name to Normandy, a region in France. 
 They were descended from Norse ("Norman" comes from "Norseman") raiders and pirates from Denmark, Iceland and Norway who, under their leader Rollo, agreed to swear fealty to King C
-harles III of West Francia. Through generations of assimilation and mixing with the native Frankish and Roman-Gaulish populations, their descendants would gradually merge with the 
+harles III of West Francia. Through generations of assimilation and mixing with the native Frankish and Roman-Gaulish populations, their descendants would gradually merge with the Carolingian-based cultures of West Francia. 
 Carolingian-based cultures of West Francia. The distinct cultural and ethnic identity of the Normans emerged initially in the first half of the 10th century, and it continued to evolve over the succeeding centuries.
   ]
 ]
@@ -201,7 +219,7 @@ distractor3: residues
 distractor1: antioxidants
 distractor2: Oxygen
 correct_answer: oxidants
-support: Oxidants and Reductants Compounds that are capable of accepting electrons, such as O 2 or F2, are calledoxidants (or oxidizing agents) because they can oxidize other compo
+support: Oxidants and Reductants Compounds that are capable of accepting electrons, such as O 2 or F2, are called oxidants (or oxidizing agents) because they can oxidize other compo
 unds. In the process of accepting electrons, an oxidant is reduced. Compounds that are capable of donating electrons, such as sodium metal or cyclohexane (C6H12), are calledreducta
 nts (or reducing agents) because they can cause the reduction of another compound. In the process of donating electrons, a reductant is oxidized. These relationships are summarized in Equation 3.30: Equation 3.30 Saylor URL: http://www. saylor. org/books.
 ```
@@ -229,9 +247,9 @@ support:
 ```
 
 
-**Шаг 2: Предварительная обработка данных**
+**Step 2: Data preprocessing**
 
-Код для очистки и токенезации данных:
+Code to clean and tokenize the data:
 
 ```python
 import json
@@ -267,7 +285,7 @@ def preprocess_squad(file_path, output_path):
                     'question': cleaned_question
                 })
 
-    print(processed_data[:5])  # Вывод первых 5 очищенных текстов
+    print(processed_data[:5])  # Output of the first 5 cleared texts
 
     with open(output_path, 'w') as f:
         json.dump(processed_data, f)
@@ -288,7 +306,7 @@ def preprocess_sciq(file_path, output_path):
             'question': cleaned_question
         })
 
-    print(processed_data[:5])  # Вывод первых 5 очищенных текстов
+    print(processed_data[:5])  # Output of the first 5 cleared texts
     with open(output_path, 'w') as f:
         json.dump(processed_data, f)
 
@@ -316,13 +334,13 @@ if __name__ == "__main__":
     main()
 ```
 
-### **День 6-7: Настройка окружения**
+### **Day 6-7: Setting up the environment**
 
-**Шаг 1: Установка библиотек**
+**Step 1: Install Libraries**
 
-Для работы с моделями Ollama и LLaMA 3 70B нужно установить необходимые библиотеки и загрузить модели.
+To work with the Ollama and LLaMA 3 70B models, you must install the necessary libraries and load the models.
 
-1. **Установка библиотек**
+1. **Installing the libraries**
 
 ```bash
 conda install numpy pandas scikit-learn nltk
@@ -376,24 +394,24 @@ pip install trl
 ollama pull llama3:70b
 ```
 
-Запуск Ollama 
+Starting Ollama 
 ```bash
 ollama serve
 ```
 
-**Шаг 2: Проверка, что всё работает**
+**Step 2: Verify that everything works**
 
-Код для запуска модели llama 3 70B с использование requests
+Code to run the llama 3 70B model using requests
 
 ```python
 import requests
 
 
-# Функция для отправки запросов к API Ollama
+# Function to send requests to the Ollama API
 def call_ollama_api(prompt, model="llama2"):
     url = "http://localhost:11434/v1/completions"
     headers = {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
     }
     data = {
         "model": model,
@@ -401,26 +419,26 @@ def call_ollama_api(prompt, model="llama2"):
     }
 
     response = requests.post(url, json=data, headers=headers)
-    if response.status_code == 200:
+    If response.status_code == 200:
         return response.json()
     else:
-        print(f"Error: {response.status_code}")
+        print(f "Error: {response.status_code}")
         print(response.text)
         return None
 
 
-# Пример использования
+# Example usage
 response = call_ollama_api("Why is the sky blue?", model="llama3")
 if response:
     print(response['choices'][0]['text'])
 ```
 
-Запуск кода из корня проекта
+Run the code from the root of the project
 ```bash
 python tests/ollama_test.py 
 ```
 
-Код для запуска модели llama 3 70B с использование библиотеки ollama и stream подхода
+Code to run the llama 3 70B model using the ollama library and stream approach
 
 ```python
 import ollama
@@ -435,7 +453,7 @@ for chunk in stream:
   print(chunk['message']['content'], end='', flush=True)
 ```
 
-Запуск кода из корня проекта
+Running the code from the root of the project
 ```bash
 python tests/ollama_stream_test.py  
 ```
