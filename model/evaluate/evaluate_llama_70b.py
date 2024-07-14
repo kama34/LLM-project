@@ -1,19 +1,13 @@
-import os
-
-# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
-# os.environ["WANDB_DISABLED"] = "true"
 import sys
-
-
 import importlib.util
-
 import json
 import torch
-from datasets import Dataset, load_metric
 import pandas as pd
+
+from datasets import Dataset, load_metric
 from transformers import AutoTokenizer, AutoModelForCausalLM, DataCollatorForSeq2Seq, TrainingArguments, Trainer, \
     GenerationConfig
+
 
 def import_from_path(module_name, module_path):
     spec = importlib.util.spec_from_file_location(module_name, module_path)
@@ -21,6 +15,7 @@ def import_from_path(module_name, module_path):
     sys.modules[module_name] = module
     spec.loader.exec_module(module)
     return module
+
 
 # import method
 writer = import_from_path('writer', '/home/kama/project/utls/writer.py')
@@ -43,7 +38,6 @@ df = pd.DataFrame(parsed_data)
 ds = Dataset.from_pandas(df)
 
 
-# Function to compute the loss
 # Function to compute the loss with prompt
 def compute_loss_with_prompt(model, tokenizer, dataset):
     model.eval()
@@ -71,41 +65,19 @@ def compute_loss_with_prompt(model, tokenizer, dataset):
     return total_loss / total_count
 
 
-# Load fine-tuned model
-# fine_tuned_model_path = '/home/kama/project/model/finetuned_llama3'
-# fine_tuned_model = AutoModelForCausalLM.from_pretrained(fine_tuned_model_path)
-# fine_tuned_tokenizer = AutoTokenizer.from_pretrained(fine_tuned_model_path)
-
-# Возможный вариант загрузки fine tune model
-# from peft import PeftModel
-#
-# tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-#
-# model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="auto",torch_dtype=torch.bfloat16)
-#
-# model = PeftModel.from_pretrained(model, model_id=peft_model_id, config=peft_config)
-#
-# model = model.merge_and_unload()
-
 # Load original models
 llama_70b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-70B-Instruct', device_map="auto",
                                                        torch_dtype=torch.bfloat16, )
-# llama_8b_model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct', device_map="auto",
-#                                                       torch_dtype=torch.bfloat16)
 
 llama_70b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-70B-Instruct', device_map="auto",
                                                     torch_dtype=torch.bfloat16, )
-# llama_8b_tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct', device_map="auto",
-#                                                    torch_dtype=torch.bfloat16, )
 
 # Select a subset for evaluation
 eval_dataset = ds.select(range(10))
 
 # Compute loss for each model
-# fine_tuned_loss = compute_loss_with_prompt(fine_tuned_model, fine_tuned_tokenizer, eval_dataset)
 llama_70b_loss = compute_loss_with_prompt(llama_70b_model, llama_70b_tokenizer, eval_dataset)
-# llama_8b_loss = compute_loss_with_prompt(llama_8b_model, llama_8b_tokenizer, eval_dataset)
 
-write_to_file("./loss.txt", f"\nLlama 3 70B Model Loss: {llama_70b_loss}", False)
+write_to_file("./loss.txt", f"Llama 3 70B Model Loss: {llama_70b_loss}", False)
 
 print(f"Llama 3 70B Model Loss: {llama_70b_loss}")
