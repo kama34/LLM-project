@@ -83,7 +83,7 @@ print(next(gen_batches_train()))
 device_map = {"": 0}
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
-    device_map=device_map,
+    device_map="auto",
     torch_dtype=torch.bfloat16,
 )
 
