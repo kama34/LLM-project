@@ -1,120 +1,46 @@
 ## Week 2: Model Training and Development
 
-### Day 1-2: Fine-tune Ollama for Topic Extraction
+### Fine-tune Ollama for Topic Extraction
+Изучив задачу внимательнее, изучив научные статьи и продумав алгоритм действий, пришёл к выводу, что нет необходимости обучать модель на извлечение темы из текста. Можно сразу сделать Fine-tune на генерацию открытых вопросов, используя датасет SQuAD, так как он лучше всего нам подходит и в нём достаточно данных.
 
-Fine-tuning Ollama for topic extraction involves using the preprocessed datasets to train the model to recognize and extract key themes and concepts. Here's how you can approach this:
 
-1. **Data Preparation**:
-   Ensure your preprocessed data is ready for fine-tuning. This data should be structured in a way that the model can learn to identify topics from given texts.
-2. **Fine-tuning Ollama**:
-   As Ollama currently does not support fine-tuning directly, we can utilize prompt engineering to achieve the desired behavior.
-3. **Setup**:
-   Ensure you have installed the necessary packages and have the datasets ready.
+#### Train LLaMA 3 70B и 8B on the Dataset to Generate Open-Ended Questions
+На имеющихся вычислительных ресурсах не удалось сделать Fine-tune LLaMA 3 70B, не хватило памяти. 
+Однако удалось сделать Fine-tune LlaMA 3 8B-Instruct. 
 
+Не буду вставлять код в отчёт, ибо он очень длинный.
+Для детального ознакомления с кодом нужно рассмотреть следующие файлы:
+model/finetune_llama3_8b.py - Fine-tune модели Llama 3 8B
+model/finetune_llama3_70b.py - Попытка Fine-tune модели Llama 3 70B
+
+Сохранённые во время обучения чекпоинты лежат в model/llama3_results/
+Сохранённая модель лежит в model/finetuned_llama3/
+
+Стоит уточнить, что обучени произошло на 3 эпохи, но расчёт был, что будет их 100. 
+Поэтому программу пришлось прервать раньше и чтобы загрузить чекпоинты и затем выполнить сохранение модели был написан и запущен код из файла: model/load_model_from_checkpoint.py
 ```python
-import ollama
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# Function to extract topics
-def extract_topics(text):
-    stream = ollama.chat(
-        model='llama3:70b',
-        messages=[{'role': 'user', 'content': f'Extract the main topics from the following text: {text}'}],
-        stream=True,
-    )
-    topics = []
-    for chunk in stream:
-        topics.append(chunk['message']['content'])
-    return topics
+checkpoint_path = './llama3_results/checkpoint-7000'
 
-# Example usage
-text = "Artificial Intelligence (AI) is a field of computer science that aims to create machines that can perform tasks that would normally require human intelligence. These tasks include things like visual perception, speech recognition, decision-making, and language translation."
-topics = extract_topics(text)
-print("Extracted Topics:", topics)
+model = AutoModelForCausalLM.from_pretrained(checkpoint_path)
+tokenizer = AutoTokenizer.from_pretrained(checkpoint_path)
+
+model.save_pretrained('./finetuned_llama3')
+tokenizer.save_pretrained('./finetuned_llama3')
 ```
 
-This script utilizes the Ollama API to extract topics from a given text using the `llama3:70b` model.
-
-#### Day 3-5: Train LLaMA 3 70B on the Dataset to Generate Open-Ended Questions
-
-For training the LLaMA 3 70B model to generate open-ended questions, we will again rely on prompt engineering, as direct fine-tuning may not be supported.
-
-1. **Data Preparation**:
-   Prepare your dataset with context and examples of open-ended questions.
-2. **Question Generation**:
-   Use the model to generate questions based on the topics extracted in the previous step.
-
-```python
-import ollama
-
-# Function to generate open-ended questions
-def generate_questions(topic):
-    stream = ollama.chat(
-        model='llama3:70b',
-        messages=[{'role': 'user', 'content': f'Generate an open-ended question about the following topic: {topic}'}],
-        stream=True,
-    )
-    questions = []
-    for chunk in stream:
-        questions.append(chunk['message']['content'])
-    return questions
-
-# Example usage
-topic = "Artificial Intelligence"
-questions = generate_questions(topic)
-print("Generated Questions:", questions)
+Для запуска моделей можно использовать следующие команды из корня репозитория
+```bash
+python model/evaluate/evaluate_finetune_llama3_8b.py 
 ```
 
-This script takes a topic and generates open-ended questions using the `llama3:70b` model.
-
-#### Day 6-7: Develop Initial Prototype
-
-The initial prototype should integrate both topic extraction and question generation functionalities. Here's a complete example:
-
-1. **Combining Functions**:
-   Create a script that combines both topic extraction and question generation.
-
-```python
-import ollama
-
-# Function to extract topics
-def extract_topics(text):
-    stream = ollama.chat(
-        model='llama3:70b',
-        messages=[{'role': 'user', 'content': f'Extract the main topics from the following text: {text}'}],
-        stream=True,
-    )
-    topics = []
-    for chunk in stream:
-        topics.append(chunk['message']['content'])
-    return topics
-
-# Function to generate open-ended questions
-def generate_questions(topic):
-    stream = ollama.chat(
-        model='llama3:70b',
-        messages=[{'role': 'user', 'content': f'Generate an open-ended question about the following topic: {topic}'}],
-        stream=True,
-    )
-    questions = []
-    for chunk in stream:
-        questions.append(chunk['message']['content'])
-    return questions
-
-# Initial Prototype
-def main(text):
-    topics = extract_topics(text)
-    print("Extracted Topics:", topics)
-    for topic in topics:
-        questions = generate_questions(topic)
-        print(f"Questions for topic '{topic}':", questions)
-
-# Example usage
-text = "Artificial Intelligence (AI) is a field of computer science that aims to create machines that can perform tasks that would normally require human intelligence. These tasks include things like visual perception, speech recognition, decision-making, and language translation."
-main(text)
+```bash
+python model/evaluate/evaluate_llama3_8b.py 
 ```
 
-### Итоги
+```bash
+python model/evaluate/evaluate_llama3_70b.py 
+```
 
-1. **Fine-tune Ollama**: Используйте инженерные приемы промптинга для извлечения тем.
-2. **Тренировка LLaMA 3 70B**: Снова примените промптинг для генерации вопросов на основе тем.
-3. **Прототип**: Создайте начальный прототип, который интегрирует функции извлечения тем и генерации вопросов.
+В качестве дальнейшего этапа будет оценка получившихся моделей и развёртывание данной модели на сервере университета возможно с использованием Ollama и Streamlit
