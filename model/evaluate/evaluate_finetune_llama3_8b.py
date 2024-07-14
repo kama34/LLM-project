@@ -6,7 +6,7 @@ import os
 import sys
 
 
-from project.utls.writer import write_to_file
+from ...utls.writer import write_to_file
 
 import json
 import torch
