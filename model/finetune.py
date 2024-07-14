@@ -107,6 +107,7 @@ tokenizer.pad_token = tokenizer.eos_token
 training_arguments = TrainingArguments(
     output_dir='./llama3_results',
     per_device_train_batch_size=8,
+    # per_device_train_batch_size=1, если памяти не будет хватать
     gradient_accumulation_steps=8,
     optim="adamw_torch",
     save_steps=100,
