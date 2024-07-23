@@ -1,7 +1,7 @@
 import requests
 
 
-# Функция для отправки запросов к API Ollama
+# Function for sending requests to the Ollama API
 def call_ollama_api(prompt, model="llama2"):
     url = "http://localhost:11434/v1/completions"
     headers = {
@@ -21,7 +21,6 @@ def call_ollama_api(prompt, model="llama2"):
         return None
 
 
-# Пример использования
 response = call_ollama_api("Why is the sky blue?", model="llama3:70b")
 if response:
     print(response['choices'][0]['text'])

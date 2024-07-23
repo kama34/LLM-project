@@ -2,7 +2,7 @@ import streamlit as st
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
-# Инициализация состояния сессии
+# Initialize session state
 if 'model_loaded' not in st.session_state:
     st.session_state.model_loaded = False
     st.session_state.model = None
@@ -13,7 +13,7 @@ def load_model():
     st.session_state.model_loading = True
     model_path = '/home/kama/project/model/finetuned_llama3'
 
-    # Загрузка модели и токенизатора
+    # Loading the model and tokenizer
     model = AutoModelForCausalLM.from_pretrained(model_path)
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     print("Model and tokenizer loaded.")
@@ -26,7 +26,7 @@ def generate_questions(context):
     model = st.session_state.model
     tokenizer = st.session_state.tokenizer
 
-    # Пример системы запроса
+    # Query system example
     system_prompt = "Extract possible questions from the given context."
     input_text = f"Context: {context}"
 
@@ -45,20 +45,20 @@ def generate_questions(context):
 def main():
     st.title('Question Generation using Fine-tuned Model')
 
-    # Предопределенные контексты
+    # Predefined contexts
     predefined_contexts = [
         "Climate change is a long-term change in the Earth's climate, especially a change due to an increase in the average atmospheric temperature.",
         "Artificial Intelligence (AI) is the simulation of human intelligence processes by machines, especially computer systems.",
         "Quantum computing is an area of computing focused on developing computers that use quantum bits or qubits, which can exist in multiple states simultaneously."
     ]
 
-    # Выпадающий список для выбора контекста
+    # Dropdown list for selecting context
     selected_context = st.selectbox(
         "Choose a predefined context or enter your own:",
         [""] + predefined_contexts
     )
 
-    # Поле для ввода пользовательского контекста
+    # Field for entering a user context
     context_input = st.text_area(
         "Or type your own context here:", value=selected_context)
 
@@ -72,7 +72,7 @@ def main():
                 st.warning("Model is not loaded. Please wait.")
             else:
                 with st.spinner('Generating questions...'):
-                    # Генерация вопросов
+                    # Generating questions
                     questions = generate_questions(context_input)
                     st.subheader("Generated Questions:")
                     st.write(questions)

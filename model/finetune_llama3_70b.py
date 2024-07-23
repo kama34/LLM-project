@@ -140,4 +140,4 @@ trainer.model.save_pretrained(peft_model_id)
 tokenizer.save_pretrained(peft_model_id)
 
 
-# Не получается сделать fine tune потому что улетает по памяти во время обучения. Да и даже если будет всё хорошо, то ещё ждать 100 дней, при данных параметрах.
+# I can’t do a fine tune because it disappears from memory during training. And even if everything goes well, we still have to wait 100 days, given these parameters.

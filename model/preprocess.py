@@ -7,10 +7,10 @@ from nltk.tokenize import word_tokenize
 
 
 def preprocess_text(text):
-    text = re.sub(r'\s+', ' ', text)  # Удаление лишних пробелов
-    text = re.sub(r'\W', ' ', text)  # Удаление небуквенных символов
-    text = text.lower()  # Приведение текста к нижнему регистру
-    tokens = word_tokenize(text)  # Токенизация текста
+    text = re.sub(r'\s+', ' ', text)  # Remove extra spaces
+    text = re.sub(r'\W', ' ', text)  # Remove non-alphabetic characters
+    text = text.lower()  # Convert text to lowercase
+    tokens = word_tokenize(text)  # Text tokenization
     return ' '.join(tokens)
 
 
@@ -31,7 +31,7 @@ def preprocess_squad(file_path, output_path):
                     'question': cleaned_question
                 })
 
-    print(processed_data[:5])  # Вывод первых 5 очищенных текстов
+    print(processed_data[:5])  # Output the first 5 cleared texts
 
     with open(output_path, 'w') as f:
         json.dump(processed_data, f)
@@ -52,7 +52,7 @@ def preprocess_sciq(file_path, output_path):
             'question': cleaned_question
         })
 
-    print(processed_data[:5])  # Вывод первых 5 очищенных текстов
+    print(processed_data[:5])  # Output the first 5 cleared texts
     with open(output_path, 'w') as f:
         json.dump(processed_data, f)
 
